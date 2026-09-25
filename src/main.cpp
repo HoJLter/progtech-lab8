@@ -8,6 +8,13 @@ class Hexagon {
 
 public:
     Hexagon(sf::RenderWindow& window, sf::Vector2f pos, float radius, float rotation): window(window) {
+        // Конструктор класса
+        // Аргументы:
+        // sf::RenderWindow& window: окно, в котором будет рендерится фигура
+        // sf::Vector2f pos: координаты центра
+        // float radius: радиус вписанной окружности
+        // float rotation: углы поворота
+        // int depth: глубина рекурсии
         shape.setPointCount(6);
         shape.setFillColor(sf::Color::Transparent);
         shape.setOutlineThickness(3.f);
@@ -36,26 +43,34 @@ class RecursiveFigure {
     std::vector<Hexagon*> figure;
     sf::RenderWindow& window;
     
-public:
-    RecursiveFigure(sf::RenderWindow& window, sf::Vector2f pos, float initialRadius, int depth): window(window) {
-        generate(pos, initialRadius, 360.f, depth);
-    }
-
+private:
     void generate(
         sf::Vector2f pos,
         float radius,
         float rotation,
-        int depth) 
+        int depth)
     {
+        // Функция, которая рекурсивно заполняет список шестиугольников figure
+        // Аргументы:
+        // sf::Vector2f pos: координаты центра
+        // float radius: радиус вписанной окружности
+        // float rotation: углы поворота
+        // int depth: глубина рекурсии
         if (depth <= 0) {
             return;
         }
         figure.push_back(new Hexagon(window, pos, radius, rotation));
         float newRadius = radius * 0.9;
         float newRotation = rotation * 0.96;
-        
+
         generate(pos, newRadius, newRotation, --depth);
     }
+
+public:
+    RecursiveFigure(sf::RenderWindow& window, sf::Vector2f pos, float initialRadius, int depth): window(window) {
+        generate(pos, initialRadius, 360.f, depth);
+    }
+
 
     void render() {
         for (auto hex : figure) {
